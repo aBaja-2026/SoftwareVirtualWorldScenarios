@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenSCENARIO>
+    <FileHeader author="MathWorks RoadRunner" date="2026-03-25T12:52:04" description="Exported from RoadRunner version R2025b Update 3 (1.11.3.59fcf018bdf)" revMajor="1" revMinor="2"/>
+    <ParameterDeclarations/>
+    <VariableDeclarations/>
+    <CatalogLocations/>
+    <RoadNetwork>
+        <LogicFile filepath="AEB_IPG.xodr"/>
+        <SceneGraphFile filepath="AEB_IPG.osgb"/>
+    </RoadNetwork>
+    <Entities>
+        <ScenarioObject name="Sedan">
+            <Vehicle mass="1500" model3d="Vehicles/Sedan.fbx" name="Sedan" vehicleCategory="car">
+                <ParameterDeclarations/>
+                <BoundingBox>
+                    <Center x="1.3224" y="0" z="0.727468"/>
+                    <Dimensions height="1.45382" length="4.55561" width="1.93778"/>
+                </BoundingBox>
+                <Performance maxAcceleration="5" maxDeceleration="5" maxSpeed="65"/>
+                <Axles>
+                    <FrontAxle maxSteering="0.698132" positionX="2.71331" positionZ="0.34415" trackWidth="1.13434" wheelDiameter="0.688299"/>
+                    <RearAxle maxSteering="0" positionX="0" positionZ="0.34415" trackWidth="1.13434" wheelDiameter="0.688299"/>
+                </Axles>
+                <Properties/>
+            </Vehicle>
+        </ScenarioObject>
+        <ScenarioObject name="NCAP_Vehicle">
+            <Vehicle mass="1000" model3d="NCAP Assets/NCAP_Vehicle.fbx" name="NCAP_Vehicle" vehicleCategory="car">
+                <ParameterDeclarations/>
+                <BoundingBox>
+                    <Center x="2.01" y="0" z="0.715"/>
+                    <Dimensions height="1.43" length="4.02" width="1.8"/>
+                </BoundingBox>
+                <Performance maxAcceleration="100" maxDeceleration="100" maxSpeed="100"/>
+                <Axles>
+                    <FrontAxle maxSteering="1.5708" positionX="4.02" positionZ="0.5" trackWidth="1.4" wheelDiameter="1"/>
+                    <RearAxle maxSteering="0" positionX="0" positionZ="0.5" trackWidth="1.4" wheelDiameter="1"/>
+                </Axles>
+                <Properties/>
+            </Vehicle>
+        </ScenarioObject>
+    </Entities>
+    <Storyboard>
+        <Init>
+            <Actions>
+                <Private entityRef="Sedan">
+                    <PrivateAction>
+                        <TeleportAction>
+                            <Position>
+                                <LanePosition laneId="1" offset="0" roadId="0" s="17.7293">
+                                    <Orientation h="0" p="0" r="0" type="absolute"/>
+                                </LanePosition>
+                            </Position>
+                        </TeleportAction>
+                    </PrivateAction>
+                    <PrivateAction>
+                        <LongitudinalAction>
+                            <SpeedAction>
+                                <SpeedActionDynamics dynamicsDimension="time" dynamicsShape="step" value="0"/>
+                                <SpeedActionTarget>
+                                    <AbsoluteTargetSpeed value="0"/>
+                                </SpeedActionTarget>
+                            </SpeedAction>
+                        </LongitudinalAction>
+                    </PrivateAction>
+                </Private>
+                <Private entityRef="NCAP_Vehicle">
+                    <PrivateAction>
+                        <TeleportAction>
+                            <Position>
+                                <LanePosition laneId="2" offset="0" roadId="0" s="7.97882">
+                                    <Orientation h="0" p="0" r="0" type="absolute"/>
+                                </LanePosition>
+                            </Position>
+                        </TeleportAction>
+                    </PrivateAction>
+                    <PrivateAction>
+                        <LongitudinalAction>
+                            <SpeedAction>
+                                <SpeedActionDynamics dynamicsDimension="time" dynamicsShape="step" value="0"/>
+                                <SpeedActionTarget>
+                                    <AbsoluteTargetSpeed value="11.1111"/>
+                                </SpeedActionTarget>
+                            </SpeedAction>
+                        </LongitudinalAction>
+                    </PrivateAction>
+                </Private>
+            </Actions>
+        </Init>
+        <Story name="Story">
+            <Act name="Act">
+                <ManeuverGroup maximumExecutionCount="1" name="SedanGroup">
+                    <Actors selectTriggeringEntities="false">
+                        <EntityRef entityRef="Sedan"/>
+                    </Actors>
+                    <Maneuver name="SedanGroup_Maneuver">
+                        <Event name="SedanGroup_Event" priority="parallel">
+                            <Action name="SedanGroup_Change_Speed">
+                                <PrivateAction>
+                                    <LongitudinalAction>
+                                        <SpeedAction>
+                                            <SpeedActionDynamics dynamicsDimension="rate" dynamicsShape="linear" value="4"/>
+                                            <SpeedActionTarget>
+                                                <AbsoluteTargetSpeed value="8.33333"/>
+                                            </SpeedActionTarget>
+                                        </SpeedAction>
+                                    </LongitudinalAction>
+                                </PrivateAction>
+                            </Action>
+                        </Event>
+                    </Maneuver>
+                </ManeuverGroup>
+                <ManeuverGroup maximumExecutionCount="1" name="NCAP_VehicleGroup">
+                    <Actors selectTriggeringEntities="false">
+                        <EntityRef entityRef="NCAP_Vehicle"/>
+                    </Actors>
+                    <Maneuver name="NCAP_VehicleGroup_Maneuver">
+                        <Event name="NCAP_VehicleGroup_Event" priority="parallel">
+                            <Action name="NCAP_VehicleGroup_Change_Lane">
+                                <PrivateAction>
+                                    <LateralAction>
+                                        <LaneChangeAction>
+                                            <LaneChangeActionDynamics dynamicsDimension="distance" dynamicsShape="cubic" value="20"/>
+                                            <LaneChangeTarget>
+                                                <RelativeTargetLane entityRef="Sedan" value="0"/>
+                                            </LaneChangeTarget>
+                                        </LaneChangeAction>
+                                    </LateralAction>
+                                </PrivateAction>
+                            </Action>
+                            <StartTrigger>
+                                <ConditionGroup>
+                                    <Condition conditionEdge="none" delay="0" name="Longitudinal_Distance_To_Actor">
+                                        <ByEntityCondition>
+                                            <TriggeringEntities triggeringEntitiesRule="any">
+                                                <EntityRef entityRef="NCAP_Vehicle"/>
+                                            </TriggeringEntities>
+                                            <EntityCondition>
+                                                <RelativeDistanceCondition coordinateSystem="lane" entityRef="Sedan" freespace="true" relativeDistanceType="longitudinal" rule="greaterOrEqual" value="10"/>
+                                            </EntityCondition>
+                                        </ByEntityCondition>
+                                    </Condition>
+                                </ConditionGroup>
+                            </StartTrigger>
+                        </Event>
+                        <Event name="NCAP_VehicleGroup_Event2" priority="parallel">
+                            <Action name="NCAP_VehicleGroup_Change_Speed">
+                                <PrivateAction>
+                                    <LongitudinalAction>
+                                        <SpeedAction>
+                                            <SpeedActionDynamics dynamicsDimension="rate" dynamicsShape="linear" value="15"/>
+                                            <SpeedActionTarget>
+                                                <AbsoluteTargetSpeed value="0"/>
+                                            </SpeedActionTarget>
+                                        </SpeedAction>
+                                    </LongitudinalAction>
+                                </PrivateAction>
+                            </Action>
+                            <StartTrigger>
+                                <ConditionGroup>
+                                    <Condition conditionEdge="none" delay="0" name="Phase_State">
+                                        <ByValueCondition>
+                                            <StoryboardElementStateCondition state="completeState" storyboardElementRef="NCAP_VehicleGroup_Event" storyboardElementType="event"/>
+                                        </ByValueCondition>
+                                    </Condition>
+                                </ConditionGroup>
+                            </StartTrigger>
+                        </Event>
+                    </Maneuver>
+                </ManeuverGroup>
+                <StartTrigger>
+                    <ConditionGroup>
+                        <Condition conditionEdge="none" delay="0" name="SimulationStart">
+                            <ByValueCondition>
+                                <SimulationTimeCondition rule="greaterOrEqual" value="0"/>
+                            </ByValueCondition>
+                        </Condition>
+                    </ConditionGroup>
+                </StartTrigger>
+            </Act>
+        </Story>
+        <StopTrigger>
+            <ConditionGroup>
+                <Condition conditionEdge="none" delay="0" name="">
+                    <ByValueCondition>
+                        <SimulationTimeCondition rule="greaterOrEqual" value="60"/>
+                    </ByValueCondition>
+                </Condition>
+            </ConditionGroup>
+            <ConditionGroup>
+                <Condition conditionEdge="none" delay="0" name="">
+                    <ByEntityCondition>
+                        <TriggeringEntities triggeringEntitiesRule="any">
+                            <EntityRef entityRef="Sedan"/>
+                            <EntityRef entityRef="NCAP_Vehicle"/>
+                        </TriggeringEntities>
+                        <EntityCondition>
+                            <CollisionCondition>
+                                <ByType type="vehicle"/>
+                            </CollisionCondition>
+                        </EntityCondition>
+                    </ByEntityCondition>
+                </Condition>
+            </ConditionGroup>
+        </StopTrigger>
+    </Storyboard>
+</OpenSCENARIO>

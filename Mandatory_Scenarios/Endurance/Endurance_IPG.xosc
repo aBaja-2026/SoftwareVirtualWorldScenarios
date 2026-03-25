@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenSCENARIO>
+    <FileHeader author="MathWorks RoadRunner" date="2026-03-25T13:08:05" description="Exported from RoadRunner version R2025b Update 3 (1.11.3.59fcf018bdf)" revMajor="1" revMinor="2"/>
+    <ParameterDeclarations/>
+    <VariableDeclarations/>
+    <CatalogLocations/>
+    <RoadNetwork>
+        <LogicFile filepath="Endurance_IPG.xodr"/>
+        <SceneGraphFile filepath="Endurance_IPG.osgb"/>
+    </RoadNetwork>
+    <Entities>
+        <ScenarioObject name="SK_Sedan">
+            <Vehicle mass="1000" model3d="Vehicles/ADT Vehicles/SK_Sedan.fbx" name="SK_Sedan" vehicleCategory="car">
+                <ParameterDeclarations/>
+                <BoundingBox>
+                    <Center x="1.30422" y="0" z="0.755225"/>
+                    <Dimensions height="1.51614" length="4.84838" width="2.10759"/>
+                </BoundingBox>
+                <Performance maxAcceleration="100" maxDeceleration="100" maxSpeed="100"/>
+                <Axles>
+                    <FrontAxle maxSteering="1.5708" positionX="2.81907" positionZ="0.34717" trackWidth="1.5827" wheelDiameter="0.694341"/>
+                    <RearAxle maxSteering="0" positionX="0" positionZ="0.34717" trackWidth="1.5827" wheelDiameter="0.694341"/>
+                </Axles>
+                <Properties/>
+            </Vehicle>
+        </ScenarioObject>
+        <ScenarioObject name="NCAP_Man_Pedestrian">
+            <Pedestrian mass="62" model3d="NCAP Assets/NCAP_Man_Pedestrian.fbx" name="NCAP_Man_Pedestrian" pedestrianCategory="pedestrian">
+                <BoundingBox>
+                    <Center x="0" y="0" z="0.9"/>
+                    <Dimensions height="1.8" length="0.875" width="0.917"/>
+                </BoundingBox>
+                <Properties/>
+            </Pedestrian>
+        </ScenarioObject>
+    </Entities>
+    <Storyboard>
+        <Init>
+            <Actions>
+                <Private entityRef="SK_Sedan">
+                    <PrivateAction>
+                        <TeleportAction>
+                            <Position>
+                                <LanePosition laneId="1" offset="0" roadId="0" s="10">
+                                    <Orientation h="0" p="0" r="0" type="absolute"/>
+                                </LanePosition>
+                            </Position>
+                        </TeleportAction>
+                    </PrivateAction>
+                    <PrivateAction>
+                        <LongitudinalAction>
+                            <SpeedAction>
+                                <SpeedActionDynamics dynamicsDimension="time" dynamicsShape="step" value="0"/>
+                                <SpeedActionTarget>
+                                    <AbsoluteTargetSpeed value="8.33333"/>
+                                </SpeedActionTarget>
+                            </SpeedAction>
+                        </LongitudinalAction>
+                    </PrivateAction>
+                </Private>
+                <Private entityRef="NCAP_Man_Pedestrian">
+                    <PrivateAction>
+                        <TeleportAction>
+                            <Position>
+                                <LanePosition laneId="-2" offset="-1.79" roadId="0" s="309.381">
+                                    <Orientation h="1.58584" p="0" r="0" type="absolute"/>
+                                </LanePosition>
+                            </Position>
+                        </TeleportAction>
+                    </PrivateAction>
+                    <PrivateAction>
+                        <LongitudinalAction>
+                            <SpeedAction>
+                                <SpeedActionDynamics dynamicsDimension="time" dynamicsShape="step" value="0"/>
+                                <SpeedActionTarget>
+                                    <AbsoluteTargetSpeed value="0"/>
+                                </SpeedActionTarget>
+                            </SpeedAction>
+                        </LongitudinalAction>
+                    </PrivateAction>
+                </Private>
+            </Actions>
+        </Init>
+        <Story name="Story">
+            <Act name="Act">
+                <ManeuverGroup maximumExecutionCount="1" name="NCAP_Man_PedestrianGroup">
+                    <Actors selectTriggeringEntities="false">
+                        <EntityRef entityRef="NCAP_Man_Pedestrian"/>
+                    </Actors>
+                    <Maneuver name="Maneuver">
+                        <Event name="Route_Init_Moved" priority="parallel">
+                            <Action name="NCAP_Man_PedestrianGroup_Follow_Route">
+                                <PrivateAction>
+                                    <RoutingAction>
+                                        <FollowTrajectoryAction>
+                                            <TimeReference>
+                                                <None/>
+                                            </TimeReference>
+                                            <TrajectoryFollowingMode followingMode="position"/>
+                                            <Trajectory closed="false" name="NCAP_Man_Pedestrian_Trajectory">
+                                                <Shape>
+                                                    <Polyline>
+                                                        <Vertex>
+                                                            <Position>
+                                                                <WorldPosition h="1.58584" p="0" r="0" x="-192.92" y="-5.54" z="0"/>
+                                                            </Position>
+                                                        </Vertex>
+                                                        <Vertex>
+                                                            <Position>
+                                                                <WorldPosition h="1.58584" p="0" r="0" x="-193.18" y="11.74" z="0"/>
+                                                            </Position>
+                                                        </Vertex>
+                                                    </Polyline>
+                                                </Shape>
+                                            </Trajectory>
+                                        </FollowTrajectoryAction>
+                                    </RoutingAction>
+                                </PrivateAction>
+                            </Action>
+                        </Event>
+                        <Event name="Event" priority="parallel">
+                            <Action name="NCAP_Man_PedestrianGroup_Change_Speed">
+                                <PrivateAction>
+                                    <LongitudinalAction>
+                                        <SpeedAction>
+                                            <SpeedActionDynamics dynamicsDimension="rate" dynamicsShape="linear" value="4"/>
+                                            <SpeedActionTarget>
+                                                <AbsoluteTargetSpeed value="1.77778"/>
+                                            </SpeedActionTarget>
+                                        </SpeedAction>
+                                    </LongitudinalAction>
+                                </PrivateAction>
+                            </Action>
+                            <StartTrigger>
+                                <ConditionGroup>
+                                    <Condition conditionEdge="none" delay="0" name="Distance_To_Actor">
+                                        <ByEntityCondition>
+                                            <TriggeringEntities triggeringEntitiesRule="any">
+                                                <EntityRef entityRef="NCAP_Man_Pedestrian"/>
+                                            </TriggeringEntities>
+                                            <EntityCondition>
+                                                <RelativeDistanceCondition coordinateSystem="entity" entityRef="SK_Sedan" freespace="true" relativeDistanceType="euclidianDistance" rule="lessOrEqual" value="38"/>
+                                            </EntityCondition>
+                                        </ByEntityCondition>
+                                    </Condition>
+                                </ConditionGroup>
+                            </StartTrigger>
+                        </Event>
+                    </Maneuver>
+                </ManeuverGroup>
+                <StartTrigger>
+                    <ConditionGroup>
+                        <Condition conditionEdge="none" delay="0" name="SimulationStart">
+                            <ByValueCondition>
+                                <SimulationTimeCondition rule="greaterOrEqual" value="0"/>
+                            </ByValueCondition>
+                        </Condition>
+                    </ConditionGroup>
+                </StartTrigger>
+            </Act>
+        </Story>
+        <StopTrigger>
+            <ConditionGroup>
+                <Condition conditionEdge="none" delay="0" name="">
+                    <ByValueCondition>
+                        <SimulationTimeCondition rule="greaterOrEqual" value="60"/>
+                    </ByValueCondition>
+                </Condition>
+            </ConditionGroup>
+            <ConditionGroup>
+                <Condition conditionEdge="none" delay="0" name="">
+                    <ByEntityCondition>
+                        <TriggeringEntities triggeringEntitiesRule="any">
+                            <EntityRef entityRef="SK_Sedan"/>
+                            <EntityRef entityRef="NCAP_Man_Pedestrian"/>
+                        </TriggeringEntities>
+                        <EntityCondition>
+                            <CollisionCondition>
+                                <ByType type="vehicle"/>
+                            </CollisionCondition>
+                        </EntityCondition>
+                    </ByEntityCondition>
+                </Condition>
+            </ConditionGroup>
+        </StopTrigger>
+    </Storyboard>
+</OpenSCENARIO>
