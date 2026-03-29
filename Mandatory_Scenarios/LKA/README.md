@@ -61,3 +61,56 @@ The road consists of two primary segments:
 | Steering input     | Steering command from LKA                 | Measured output      |
 
 ---
+
+---
+
+## 6. Files in this Folder
+
+| File | Format | Use with |
+|---|---|---|
+| `LKA.rrscene` | RoadRunner Scene | RoadRunner |
+| `LKA.rrscenario` | RoadRunner Scenario | RoadRunner |
+| `LKA_IPG.xosc` | OpenSCENARIO 1.2 | IPG CarMaker / any OpenSCENARIO tool |
+| `LKA_IPG.xodr` | OpenDRIVE | IPG CarMaker / any OpenDRIVE tool |
+| `LKA_IPG.osgb` | OpenSceneGraph binary (3D mesh) | IPG CarMaker |
+| `LKA_IPG.geojson` | GeoJSON road data | GIS / custom tools |
+| `LKA.mp4` | Video preview | Reference |
+
+> The `.xosc`, `.xodr`, and `.osgb` files must remain in the **same folder**.
+
+---
+
+## 7. Road Geometry (from OpenDRIVE)
+
+The road is 1002.3 m long and consists of the following segments in sequence:
+
+| Segment | Type | Length | Notes |
+|---|---|---|---|
+| 1 | Straight | 24.5 m | Entry straight |
+| 2 | Left arc | 50.8 m | Curvature −0.00388 rad/m |
+| 3 | Right arc | 50.3 m | Curvature +0.00784 rad/m |
+| 4 | Straight | 51.0 m | Mid straight |
+| 5 | Left arc | 50.3 m | Curvature −0.00784 rad/m |
+| 6 | Right arc | 50.8 m | Curvature +0.00388 rad/m |
+| 7 | Straight | 724.5 m | Long exit straight |
+
+The S-curve section (segments 2–6) spans ~253 m and forms a symmetric chicane. The LKA system must handle continuous lane-centering corrections through this section before stabilising on the long straight.
+
+---
+
+## 8. Scenario Parameters (from OpenSCENARIO)
+
+| Parameter | Value |
+|---|---|
+| Road length | 1002.3 m |
+| Ego vehicle | Sedan — mass 1500 kg |
+| Ego start speed | 0 km/h |
+| Ego acceleration | 4 m/s² → target 30 km/h (8.33 m/s) |
+| Traffic | None |
+| Simulation stop | 60 s elapsed OR collision |
+
+---
+
+## 9. How to Run This Scenario
+
+→ See the [master README](../../README.md) for step-by-step instructions for both **RoadRunner** and **IPG CarMaker**.
